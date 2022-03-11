@@ -75,6 +75,21 @@ class wire():
         # return Bx,By
         return np.imag(complexFields),np.real(complexFields)
     
+    def getMultipole_strengths(self,order=20,normalise_at_E = None):
+        # Computing integrated coefficients
+        self.order = order
+        kn,sn = getMultiCoeff(self.I,self.L,[self.x,self.y],nmax=order)
+        
+        # p0 -> momentum in eV/c
+        if normalise_at_E is not None:
+            p0 = np.sqrt(Energy**2-cst.m_p_eV**2)/cst.c
+            kn = (kn/p0)
+            sn = (sn/p0)
+
+        # return kn,sn
+        return kn,sn
+    
+    
     
     def getKick(self,xObs,yObs,Energy,order=np.inf):
         self.order = order
